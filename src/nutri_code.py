@@ -1,3 +1,4 @@
+"""This module generates a Nutri-Score image based on the given score."""
 import streamlit as st
 import matplotlib.pyplot as plt
 
@@ -50,9 +51,3 @@ def generate_nutri_score_image(letter):
 
     # Display the image
     st.pyplot(fig)
-
-# # # Example usage:
-# score = st.text_input(label="Enter the score")  # Replace with the desired score
-
-# if score:
-#     generate_nutri_score_image(score)

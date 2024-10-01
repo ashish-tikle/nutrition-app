@@ -1,7 +1,6 @@
 streamlit
 Pillow
-opencv-python
 matplotlib
-streamlit-option-menu
 python-dotenv
 google-generativeai
+pyNutriScore
