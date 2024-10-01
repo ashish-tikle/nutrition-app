@@ -14,11 +14,11 @@ genai.configure(api_key=GOOGLE_API_KEY)
 
 def main():
     """Main function for the Streamlit app."""
-    st.sidebar.title("AnnaGuru")
-    user_picked = st.sidebar.radio("Choose an option", ["Chat with AnnaGuru",
+    st.sidebar.title("AnnGuru")
+    user_picked = st.sidebar.radio("Choose an option", ["Chat with AnnGuru",
                                                         "Gemini Vision"])
 
-    if user_picked == "Chat with AnnaGuru":
+    if user_picked == "Chat with AnnGuru":
         model = genai.GenerativeModel("gemini-pro")
         chat_interface(model=model)
     elif user_picked == "Gemini Vision":

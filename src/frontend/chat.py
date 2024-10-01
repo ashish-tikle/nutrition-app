@@ -12,13 +12,13 @@ def chat_interface(model):
     """Chat interface for the Streamlit frontend."""
     st.session_state["chat_history"] = model.start_chat(history=[])
 
-    st.title("AnnaGuru")
+    st.title("AnnGuru")
 
     for message in st.session_state.chat_history.history:
         with st.chat_message(role_for_streamlit(message.role)):
             st.markdown(message.parts[0].text)
 
-    user_input = st.chat_input("Message AnnaGuru...")
+    user_input = st.chat_input("Message AnnGuru...")
     if user_input:
         st.chat_message("user").markdown(user_input)
         response = st.session_state.chat_history.send_message(user_input)
