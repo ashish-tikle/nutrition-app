@@ -14,15 +14,22 @@ def vision_interface(gemini_model):
                                              type=["jpg", "jpeg", "png"],
                                              key="image_nutrition_facts")
 
+    image_ingredient_list = st.file_uploader("Upload ingredient list image",
+                                             type=["jpg", "jpeg", "png"],
+                                             key="image_ingredient_list")
+
     if st.button("Generate Captioning"):
         load_image_nutrition = Image.open(image_nutrition_facts)
+        load_image_ingredients = Image.open(image_ingredient_list)
 
         col_left, col_right = st.columns(2)
 
         with col_left:
             st.image(load_image_nutrition.resize((800, 500)))
+            st.image(load_image_ingredients.resize((800, 500)))
 
         caption_response = extract_nutrition_facts(image_nutrition_facts,
+                                                   image_ingredient_list,
                                                    gemini_model)
 
         with col_right:
@@ -37,9 +44,10 @@ def vision_interface(gemini_model):
         st.write("Nutri-Score: ", caption_response['nutri_score'])
 
 
-def extract_nutrition_facts(image_path, gemini_model):
+def extract_nutrition_facts(image_path1, image_path2, gemini_model):
     """Extract nutrition facts from the image using the Gemini model."""
-    sample_image = Image.open(image_path)
+    sample_image_1 = Image.open(image_path1)
+    sample_image_2 = Image.open(image_path2)
 
     prompt = """
     You are a smart AI enabled label reader which extracts nutrition facts 
@@ -113,7 +121,7 @@ def extract_nutrition_facts(image_path, gemini_model):
   """
 
     # Contents to be processed by the model
-    contents = [sample_image, prompt]
+    contents = [sample_image_1, sample_image_2, prompt]
 
     # call the model to generate the content
     response = gemini_model.generate_content(contents)  
