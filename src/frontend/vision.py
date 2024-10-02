@@ -46,36 +46,38 @@ def vision_interface(gemini_model):
 
         st.metric(label="Nutri-Score", value=caption_response['nutri_score'])
 
-        st.subheader("Ingredients", divider=True)
+        st.subheader("Nutritional Information", divider=True)
         col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
         with col1:
             st.metric(
                 label="Energy",
-                value=caption_response['nutrition_facts']['energy'])
+                value=f"{caption_response['nutrition_facts']['energy']} kcal")
         with col2:
             st.metric(
                 label="Sugar",
-                value=caption_response['nutrition_facts']['sugar'])
+                value=f"{caption_response['nutrition_facts']['sugar']} g")
         with col3:
             st.metric(
                 label="Saturated Fats",
-                value=caption_response['nutrition_facts']['saturated_fats'])
+                value=f"{caption_response['nutrition_facts']
+                         ['saturated_fats']} g")
         with col4:
             st.metric(
                 label="Sodium",
-                value=caption_response['nutrition_facts']['sodium'])
+                value=f"{caption_response['nutrition_facts']['sodium']} mg")
         with col5:
             st.metric(
                 label="Protein",
-                value=caption_response['nutrition_facts']['proteins'])
+                value=f"{caption_response['nutrition_facts']['proteins']} g")
         with col6:
             st.metric(
                 label="Dietary Fiber",
-                value=caption_response['nutrition_facts']['fibers'])
+                value=f"{caption_response['nutrition_facts']['fibers']} g")
         with col7:
             st.metric(
                 label="Fruit Percentage",
-                value=caption_response['nutrition_facts']['fruit_percentage'])
+                value=f"{caption_response['nutrition_facts']
+                         ['fruit_percentage']} %")
         with col8:
             st.metric(
                 label="Food Type",
@@ -141,7 +143,8 @@ def extract_nutrition_facts(image_path1, image_path2, gemini_model):
         },
         "Salt in low quantity (0.0825%)": {
           "FYI": "A high consumption of salt (or sodium) can cause raised
-          blood pressure, which can increase the risk of heart disease and stroke.",
+          blood pressure, which can increase the risk of heart disease and
+          stroke.",
           "Recommendation": "Limit the consumption of salt and salted food"
         }
       },
