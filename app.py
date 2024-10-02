@@ -14,9 +14,42 @@ genai.configure(api_key=GOOGLE_API_KEY)
 
 def main():
     """Main function for the Streamlit app."""
+    st.set_page_config(
+        page_title="AnnGuru",
+        page_icon="src/frontend/assets/SEO-Food-Fresh-Groceries.png",
+        layout="wide",
+        )
+    st.sidebar.image(
+        "src/frontend/assets/logo.png",
+        caption="Empowering Healthier Choices, One Scan at a Time",
+        use_column_width="always"
+        )
     st.sidebar.title("AnnGuru")
-    user_picked = st.sidebar.radio("Choose an option", ["Chat with AnnGuru",
-                                                        "Gemini Vision"])
+    st.sidebar.markdown("## Choose an option")
+
+    # Define the options and their corresponding icons
+    options = {
+        "Chat with AnnGuru": "💬",
+        "Gemini Vision": "👁️"
+    }
+
+    # Create a list of options with icons
+    option_list = [f"{icon} {option}" for option, icon in options.items()]
+
+    # Display the radio button with options
+    user_picked = st.sidebar.radio(
+        "Choose an option",
+        option_list,
+        index=0,
+        key="radio_options",
+        help="Select an option to interact with AnnGuru",
+        label_visibility="collapsed"
+        )
+
+    # Remove the icon from the selected option for further processing
+    user_picked = user_picked.split(" ", 1)[1]
+    # user_picked = st.sidebar.radio("Choose an option", ["Chat with AnnGuru",
+    #                                                     "Gemini Vision"])
 
     if user_picked == "Chat with AnnGuru":
         model = genai.GenerativeModel("gemini-pro")

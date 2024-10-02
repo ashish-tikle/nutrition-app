@@ -1,4 +1,6 @@
-"""This module contains the code for the vision interface of the application."""
+"""
+This module contains the code for the vision interface of the application.
+"""
 import json
 import streamlit as st
 from PIL import Image
@@ -20,28 +22,72 @@ def vision_interface(gemini_model):
 
     if st.button("Generate Captioning"):
         load_image_nutrition = Image.open(image_nutrition_facts)
+        st.image(
+            load_image_nutrition.resize((800, 500)),
+            caption="Nutrition Facts"
+            )
+
         load_image_ingredients = Image.open(image_ingredient_list)
-
-        col_left, col_right = st.columns(2)
-
-        with col_left:
-            st.image(load_image_nutrition.resize((800, 500)))
-            st.image(load_image_ingredients.resize((800, 500)))
+        st.image(
+            load_image_ingredients.resize((800, 500)),
+            caption="Ingredients List"
+            )
 
         caption_response = extract_nutrition_facts(image_nutrition_facts,
                                                    image_ingredient_list,
                                                    gemini_model)
 
-        with col_right:
-            st.write(caption_response)
+        st.header("Health Analysis Report", divider=True)
 
-        st.subheader("Nutri-Class Prediction")
-
+        st.subheader("Nutrition")
         score = caption_response['nutri_class']
         if score:
             generate_nutri_score_image(score)
 
-        st.write("Nutri-Score: ", caption_response['nutri_score'])
+        st.metric(label="Nutri-Score", value=caption_response['nutri_score'])
+
+        st.subheader("Ingredients", divider=True)
+        col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
+        with col1:
+            st.metric(
+                label="Energy",
+                value=caption_response['nutrition_facts']['energy'])
+        with col2:
+            st.metric(
+                label="Sugar",
+                value=caption_response['nutrition_facts']['sugar'])
+        with col3:
+            st.metric(
+                label="Saturated Fats",
+                value=caption_response['nutrition_facts']['saturated_fats'])
+        with col4:
+            st.metric(
+                label="Sodium",
+                value=caption_response['nutrition_facts']['sodium'])
+        with col5:
+            st.metric(
+                label="Protein",
+                value=caption_response['nutrition_facts']['proteins'])
+        with col6:
+            st.metric(
+                label="Dietary Fiber",
+                value=caption_response['nutrition_facts']['fibers'])
+        with col7:
+            st.metric(
+                label="Fruit Percentage",
+                value=caption_response['nutrition_facts']['fruit_percentage'])
+        with col8:
+            st.metric(
+                label="Food Type",
+                value=caption_response['nutrition_facts']['food_type'])
+
+        st.subheader("Health Analysis", divider=True)
+        if caption_response['nutrition_facts']["health_analysis"]:
+            st.json(caption_response["nutrition_facts"]["health_analysis"])
+
+        st.subheader("Additives", divider=True)
+        if caption_response['nutrition_facts']["additives"]:
+            st.json(caption_response["nutrition_facts"]["additives"])
 
 
 def extract_nutrition_facts(image_path1, image_path2, gemini_model):
@@ -101,11 +147,13 @@ def extract_nutrition_facts(image_path1, image_path2, gemini_model):
       },
       "additives": {
         "E322 - Lecithins": "Lecithins are natural compounds commonly used in
-        the food industry as emulsifiers and stabilizers. They do not present any known health risks."
+        the food industry as emulsifiers and stabilizers. They do not present
+        any known health risks."
       }
     where the key is the nutrient and its quantity from nutrition facts and
-    the value is the FYI and Recommendation based on the quantity. List down the 
-    major additives/preservatives present in the food and their description along with any health risks involved.
+    the value is the FYI and Recommendation based on the quantity. List down
+    the major additives/preservatives present in the food and their description
+    along with any health risks involved.
     7. Sample output should have the following keys in json format:
     {
     'energy': 250,
