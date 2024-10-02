@@ -64,7 +64,7 @@ def vision_interface(gemini_model):
         with col4:
             st.metric(
                 label="Sodium",
-                value=f"{caption_response['nutrition_facts']['sodium']} mg")
+                value=f"{caption_response['nutrition_facts']['sodium']} g")
         with col5:
             st.metric(
                 label="Protein",
